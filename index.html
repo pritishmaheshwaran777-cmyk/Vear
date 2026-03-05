@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vear Cosmetics</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+color:#fff;
+background:
+linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
+url("https://images.unsplash.com/photo-1502082553048-f009c37129b9");
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+}
+
+/* NAVBAR */
+nav{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 50px;
+background:rgba(0,0,0,0.6);
+position:sticky;
+top:0;
+backdrop-filter:blur(10px);
+z-index:100;
+}
+.logo{
+font-size:28px;
+font-weight:700;
+color:#A4F000;
+}
+nav a{
+color:#fff;
+text-decoration:none;
+margin-left:25px;
+cursor:pointer;
+}
+nav a:hover{
+color:#A4F000;
+}
+
+/* PAGES */
+.page{
+display:none;
+min-height:100vh;
+padding:60px 50px;
+text-align:center;
+}
+.active{
+display:block;
+}
+
+/* HERO */
+.hero{
+height:80vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+.hero h1{
+font-size:64px;
+color:#A4F000;
+margin-bottom:20px;
+}
+.hero p{
+font-size:22px;
+margin-bottom:30px;
+}
+.hero button{
+padding:15px 40px;
+border:none;
+border-radius:30px;
+background:#A4F000;
+color:#000;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+}
+.hero button:hover{
+background:#BFFF00;
+}
+
+/* ABOUT */
+.about h2{
+font-size:36px;
+color:#A4F000;
+margin-bottom:20px;
+}
+
+/* PRODUCTS */
+.products-section{
+background:#111;
+}
+.products-section h2{
+font-size:42px;
+color:#A4F000;
+margin-bottom:40px;
+}
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+}
+.product-card{
+background:#1A1A1A;
+padding:20px;
+border-radius:15px;
+border:1px solid rgba(164,240,0,0.2);
+transition:0.3s;
+}
+.product-card:hover{
+transform:translateY(-10px);
+box-shadow:0 10px 20px rgba(164,240,0,0.4);
+}
+.product-card img{
+width:100%;
+border-radius:10px;
+}
+.product-card h3{
+color:#A4F000;
+margin:15px 0;
+}
+.price{
+color:#A4F000;
+font-weight:600;
+margin-bottom:10px;
+}
+.product-card button{
+padding:10px 20px;
+border:none;
+border-radius:25px;
+background:#A4F000;
+color:#000;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+}
+.product-card button:hover{
+background:#BFFF00;
+}
+
+/* CART */
+#cartItems div{
+background:#111;
+padding:15px;
+margin:10px auto;
+border-radius:10px;
+max-width:500px;
+border:1px solid rgba(164,240,0,0.2);
+}
+.remove-btn{
+background:green;
+color:white;
+border:none;
+padding:5px 10px;
+border-radius:5px;
+cursor:pointer;
+}
+
+/* CONTACT */
+.contact-box{
+max-width:500px;
+margin:auto;
+background:#111;
+padding:40px;
+border-radius:15px;
+border:1px solid rgba(164,240,0,0.2);
+text-align:center;
+}
+.contact-box p{
+font-size:20px;
+margin-bottom:25px;
+}
+
+footer{
+padding:10px;
+text-align:center;
+background:#000;
+color:#A4F000;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo">Vear Cosmetics</div>
+<div>
+<a onclick="showPage('home')">Home</a>
+<a onclick="showPage('products')">Products</a>
+<a onclick="showPage('cart')">Cart (<span id="cartCount">0</span>)</a>
+<a onclick="showPage('contact')">Contact</a>
+</div>
+</nav>
+
+<!-- HOME -->
+<section id="home" class="page active">
+<div class="hero">
+<h1>Vear Cosmetics</h1>
+<p>Care Straight From Nature</p>
+<button onclick="showPage('products')">Shop Now</button>
+</div>
+
+<div class="about">
+<h2>About Us</h2>
+<p>
+Vear Cosmetics creates premium plant-based beauty products inspired by nature.
+We combine traditional herbal ingredients with modern care science to deliver
+safe, sustainable, and effective skincare and haircare solutions.
+</p>
+</div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products" class="page products-section">
+<h2>Our Products</h2>
+<div class="products" id="productsContainer"></div>
+</section>
+
+<!-- CART -->
+<section id="cart" class="page">
+<h2 style="color:#A4F000;font-size:42px;margin-bottom:30px;">Your Cart</h2>
+<div id="cartItems"></div>
+<h3>Total: ₹<span id="cartTotal">0</span></h3>
+<button onclick="checkout()" 
+style="margin-top:20px;padding:12px 25px;border:none;border-radius:25px;background:#A4F000;color:#000;font-weight:600;cursor:pointer;">
+Checkout
+</button>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="page">
+<h2 style="color:#A4F000;font-size:42px;margin-bottom:40px;">Contact</h2>
+<div class="contact-box">
+<p><strong>Email:</strong><br>
+anithamaheshwaran@gmail.com</p>
+
+<p><strong>Phone:</strong><br>
++91 96595 22888</p>
+</div>
+</section>
+
+<footer>
+© 2026 Vear Cosmetics. All Rights Reserved. | Designed by Pritish
+</footer>
+
+<script>
+function showPage(pageId){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById(pageId).classList.add("active");
+window.scrollTo(0,0);
+}
+
+const productData = [
+["Avarampoo & Multani Mitti Soap",130],
+["Herbal Double Infused Soap",140],
+["Sandal Soap",110],
+["Nalangumavu Soap",125],
+["Avocado Soap",150],
+["Aloevera Shampoo",180],
+["Antidandruff Shampoo",200],
+["Baby Shampoo",150],
+["Avocado Shampoo",190],
+["Lip Balm",90],
+["Natural Hair Dye",250],
+["Natural Hair Removal",200],
+["Hair Growth Serum",300],
+["Anti Ageing Serum",350],
+["Moisturizer & Sunscreen",280]
+];
+
+const container=document.getElementById("productsContainer");
+let cart=[];
+
+productData.forEach(p=>{
+const card=document.createElement("div");
+card.className="product-card";
+card.innerHTML=`
+<img src="https://via.placeholder.com/250x200.png?text=${p[0].replace(/ /g,'+')}" alt="${p[0]}">
+<h3>${p[0]}</h3>
+<div class="price">₹${p[1]}</div>
+<button onclick="addToCart('${p[0]}',${p[1]})">Buy Now</button>
+`;
+container.appendChild(card);
+});
+
+function addToCart(name,price){
+let existing=cart.find(item=>item.name===name);
+if(existing){
+existing.qty+=1;
+}else{
+cart.push({name,price,qty:1});
+}
+updateCart();
+alert("Added to cart!");
+}
+
+function updateCart(){
+const cartItems=document.getElementById("cartItems");
+const cartCount=document.getElementById("cartCount");
+const cartTotal=document.getElementById("cartTotal");
+
+cartItems.innerHTML="";
+let total=0;
+let count=0;
+
+cart.forEach((item,index)=>{
+total+=item.price*item.qty;
+count+=item.qty;
+
+cartItems.innerHTML+=`
+<div>
+<h3>${item.name}</h3>
+<p>₹${item.price} × ${item.qty}</p>
+<button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+</div>
+`;
+});
+
+cartTotal.innerText=total;
+cartCount.innerText=count;
+}
+
+function removeItem(index){
+cart.splice(index,1);
+updateCart();
+}
+
+function checkout(){
+if(cart.length===0){
+alert("Your cart is empty!");
+return;
+}
+alert("Checkout successful! (Demo only)");
+cart=[];
+updateCart();
+showPage('home');
+}
+</script>
+
+</body>
+</html>
